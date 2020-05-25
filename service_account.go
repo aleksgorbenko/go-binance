@@ -30,10 +30,12 @@ func (as *apiService) NewOrder(or NewOrderRequest) (*ProcessedOrder, error) {
 	params["side"] = string(or.Side)
 	params["type"] = string(or.Type)
 	params["quantity"] = strconv.FormatFloat(or.Quantity, 'f', -1, 64)
-	params["price"] = strconv.FormatFloat(or.Price, 'f', -1, 64)
 	params["timestamp"] = strconv.FormatInt(unixMillis(or.Timestamp), 10)
 	if or.TimeInForce != "" {
 		params["timeInForce"] = string(or.TimeInForce)
+	}
+	if or.Price != 0 {
+		params["price"] = strconv.FormatFloat(or.Price, 'f', -1, 64)
 	}
 	if or.NewClientOrderID != "" {
 		params["newClientOrderId"] = or.NewClientOrderID
@@ -88,10 +90,12 @@ func (as *apiService) NewOrderTest(or NewOrderRequest) error {
 	params["side"] = string(or.Side)
 	params["type"] = string(or.Type)
 	params["quantity"] = strconv.FormatFloat(or.Quantity, 'f', -1, 64)
-	params["price"] = strconv.FormatFloat(or.Price, 'f', -1, 64)
 	params["timestamp"] = strconv.FormatInt(unixMillis(or.Timestamp), 10)
 	if or.TimeInForce != "" {
 		params["timeInForce"] = string(or.TimeInForce)
+	}
+	if or.Price != 0 {
+		params["price"] = strconv.FormatFloat(or.Price, 'f', -1, 64)
 	}
 	if or.NewClientOrderID != "" {
 		params["newClientOrderId"] = or.NewClientOrderID
