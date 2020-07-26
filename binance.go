@@ -26,6 +26,8 @@ type Binance interface {
 	Klines(kr KlinesRequest) ([]*Kline, error)
 	// Ticker24 returns 24hr price change statistics.
 	Ticker24(tr TickerRequest) (*Ticker24, error)
+
+	TickerPrice(sym string) (*Ticker, error)
 	// TickerAllPrices returns ticker data for symbols.
 	TickerAllPrices() ([]*PriceTicker, error)
 	// TickerAllBooks returns tickers for all books.
@@ -235,9 +237,18 @@ type PriceTicker struct {
 	Price  float64
 }
 
+type Ticker struct {
+	Symbol string
+	Price  string
+}
+
 // TickerAllPrices returns ticker data for symbols.
 func (b *binance) TickerAllPrices() ([]*PriceTicker, error) {
 	return b.Service.TickerAllPrices()
+}
+
+func (b *binance) TickerPrice(sym string) (*Ticker, error) {
+	return b.Service.TickerPrice(sym)
 }
 
 // BookTicker represents book ticker data.

@@ -480,3 +480,30 @@ func (as *apiService) TickerAllBooks() ([]*BookTicker, error) {
 	}
 	return btc, nil
 }
+
+func (as *apiService) TickerPrice(symbol string) (*Ticker, error) {
+	params := make(map[string]string)
+	params["symbol"] = symbol
+
+	res, err := as.request("GET", "api/v1/ticker/price", params, false, false)
+	if err != nil {
+		return nil, err
+	}
+
+	data, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, errors.Wrap(err, "unable to read response from Ticker/allBookTickers")
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != 200 {
+		return nil, as.handleError(data)
+	}
+
+	ticker := &Ticker{}
+	if err := json.Unmarshal(data, ticker); err != nil {
+		return nil, errors.Wrap(err, "ticker unmarshal failed")
+	}
+
+	return ticker, nil
+}
